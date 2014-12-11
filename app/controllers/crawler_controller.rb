@@ -9,7 +9,7 @@ class CrawlerController < ApplicationController
     elsif Rails.env.production?
       app_id = '717959514961486'
       secret =  'e9e7630ba3c7ba9138212ef6bfd236cb'
-      redirect_uri = 'http://peaceful-springs-2884.herokuapp.com/'
+      redirect_uri = 'http://peaceful-springs-2884.herokuapp.com/auth'
     end
     f = RC::Facebook.new :app_id => app_id,
                          :secret => secret,
