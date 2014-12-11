@@ -6,7 +6,7 @@ class CrawlerController < ApplicationController
                          :secret => 'e9e7630ba3c7ba9138212ef6bfd236cb',
                          :log_method => method(:puts)
 
-    redirect_uri = 'http://localhost:3000/auth'
+    redirect_uri = 'http://peaceful-springs-2884.herokuapp.com/auth'
     scope = 'public_profile, user_likes, user_status, user_tagged_places'
 
     # Redirect the user to:
