@@ -2,11 +2,18 @@ require 'rest-more'
 require 'net/http'
 class CrawlerController < ApplicationController
   def get_access_token
-    f = RC::Facebook.new :app_id => '717959514961486',
-                         :secret => 'e9e7630ba3c7ba9138212ef6bfd236cb',
+    if Rails.env.development?
+      app_id = '718004254957012'
+      secret = '90c8fab3937966611b07e751ae6d6aa4'
+      redirect_uri = 'http://localhost:3000/auth'
+    elsif Rails.env.production?
+      app_id = '717959514961486'
+      secret =  'e9e7630ba3c7ba9138212ef6bfd236cb'
+      redirect_uri = 'http://peaceful-springs-2884.herokuapp.com/'
+    end
+    f = RC::Facebook.new :app_id => app_id,
+                         :secret => secret,
                          :log_method => method(:puts)
-
-    redirect_uri = 'http://peaceful-springs-2884.herokuapp.com/auth'
     scope = 'public_profile, user_likes, user_status, user_tagged_places'
 
     # Redirect the user to:
@@ -16,10 +23,18 @@ class CrawlerController < ApplicationController
     # Then we could call the API:
   end
   def auth
-    f = RC::Facebook.new :app_id => '717959514961486',
-                     :secret => 'e9e7630ba3c7ba9138212ef6bfd236cb',
+    if Rails.env.development?
+      app_id = '718004254957012'
+      secret = '90c8fab3937966611b07e751ae6d6aa4'
+      redirect_uri = 'http://localhost:3000/auth'
+    elsif Rails.env.production?
+      app_id = '717959514961486'
+      secret =  'e9e7630ba3c7ba9138212ef6bfd236cb'
+      redirect_uri = 'http://peaceful-springs-2884.herokuapp.com/auth'
+    end
+    f = RC::Facebook.new :app_id => app_id,
+                     :secret => secret,
                      :log_method => method(:puts)
-    redirect_uri = 'http://localhost:3000/auth'
     scope = 'public_profile, user_likes, user_status, user_tagged_places'
     f.authorize!(:redirect_uri => redirect_uri, :code => params[:code])
     raw_data = f.get('me/statuses?fields=place')
