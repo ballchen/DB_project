@@ -48,14 +48,24 @@ class CrawlerController < ApplicationController
   end
 
   private
-  def get_json(object)
-    ActiveSupport::JSON.decode(object)
-  end
-
   def get_place_from_tagged_places(raw_data,info)
     raw_data['data'].each do | data |
       if(data['place'])
         info.push(data)
+        place = Place.new
+        place.data_id = data['place']['id'].to_i
+        place.name = data['place']['name']
+        place.updated_time = data['updated_time']
+        location = Location.new
+        location.city = data['place']['location']['city']
+        location.country = data['place']['location']['country']
+        location.latitude = data['place']['location']['latitude']
+        location.longitude = data['place']['location']['longitude']
+        location.street = data['place']['location']['street']
+        location.zip = data['place']['location']['zip']
+        location.save
+        place.location_id = location
+        place.save
       end
     end
     if( raw_data['paging'] && raw_data['paging']['next'] )
@@ -68,6 +78,20 @@ class CrawlerController < ApplicationController
     raw_data['data'].each do | data |
       if(data['place'])
         info.push(data)
+        place = Place.new
+        place.data_id = data['place']['id'].to_i
+        place.name = data['place']['name']
+        place.updated_time = data['updated_time']
+        location = Location.new
+        location.city = data['place']['location']['city']
+        location.country = data['place']['location']['country']
+        location.latitude = data['place']['location']['latitude']
+        location.longitude = data['place']['location']['longitude']
+        location.street = data['place']['location']['street']
+        location.zip = data['place']['location']['zip']
+        location.save
+        place.location_id = location
+        place.save
       end
     end
     if( raw_data['paging'] && raw_data['paging']['next'] )
@@ -78,6 +102,12 @@ class CrawlerController < ApplicationController
 
   def get_data_from_likes(raw_data,info)
     raw_data['data'].each do | data |
+      like = Like.new
+      like.category = data['category']
+      like.name = data['name']
+      like.created_time = data['created_time']
+      like.data_id = data['id'].to_i
+      like.save
       info.push(data)
     end
     if( raw_data['paging'] && raw_data['paging']['next'] )
