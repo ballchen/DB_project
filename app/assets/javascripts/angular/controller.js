@@ -20,22 +20,26 @@ angular.module('app.controller', [])
         method: "GET",
         url: "/api/locations"
       }).success(function(data, status, headers, config) {
-        $scope.locations = data;
-        var markerInfos = _.map($scope.locations, function(location) {
-          var street = (location.street!==null)? location.street: ""
-          var city =(location.city!==null)? location.city: ""
-          var country = (location.country!==null)? location.country: ""
-          var where = street+" "+ city +" "+ country
+        $scope.places = data;
+        console.log(data)
+        var location_item;
+        var markerInfos = _.map($scope.places, function(place) {
+          location_item = place.location
+          var street = (location_item.street!==null)? location_item.street: ""
+          var city =(location_item.city!==null)? location_item.city: ""
+          var country = (location_item.country!==null)? location_item.country: ""
+          var where = (street+" "+ city +" "+ country)? street+" "+ city +" "+ country: ""
+          console.log(place.name)
           return {
-            "infowindow": "<h3>" + (where!==null)? where:"" + "</h3>",
+            "infowindow": "<h3>" + place.name + "</h3>" + "<p>" + where + "</p>",
             "picture": {
-              url: location.image_url,
+              url: location_item.image_url,
               width: 36,
               height: 36
             },
-            "lat": (location.latitude) ? (location.latitude) : (26.0 + location.id * 0.001),
-            "lng": (location.longitude) ? (location.longitude) : (123.0 + location.id * 0.001),
-            "id": location.id
+            "lat": (location_item.latitude) ? (location_item.latitude) : (26.0 + location_item.id * 0.001),
+            "lng": (location_item.longitude) ? (location_item.longitude) : (123.0 + location_item.id * 0.001),
+            "id": location_item.id
           };
         })
         handler.buildMap({
@@ -49,7 +53,7 @@ angular.module('app.controller', [])
             marker.serviceObject.id = m.id;
 
             google.maps.event.addListener(marker.serviceObject, 'click', function() {
-              $scope.location = _.find($scope.locations, function(location) {
+              $scope.location = _.find($scope.places, function(location) {
                 return location.id == marker.serviceObject.id
               });
               $scope.$apply();

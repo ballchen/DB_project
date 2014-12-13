@@ -1,4 +1,4 @@
 class Location < ActiveRecord::Base
-  belongs_to :place
+  has_many :place,:class_name => 'Place', :foreign_key => 'location_id'
   validates_uniqueness_of :longitude, :scope => [:latitude]
 end

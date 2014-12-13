@@ -2,7 +2,7 @@ class HomeController < ApplicationController
   def index
   end
   def locations
-    locations = Location.all
-    render json: locations.to_json
+    locations = Place.all
+    render json: locations.to_json({:include => :location})
   end
 end
