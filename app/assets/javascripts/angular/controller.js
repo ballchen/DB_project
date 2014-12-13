@@ -22,8 +22,12 @@ angular.module('app.controller', [])
       }).success(function(data, status, headers, config) {
         $scope.locations = data;
         var markerInfos = _.map($scope.locations, function(location) {
+          var street = (location.street!==null)? location.street: ""
+          var city =(location.city!==null)? location.city: ""
+          var country = (location.country!==null)? location.country: ""
+          var where = street+" "+ city +" "+ country
           return {
-            //"infowindow": "<h3>" + location.name + "</h3>" + '<img src="' + location.image_url + '" style="width:100px;height:75px;">' + "<p>" + location.abstract + "</p>",
+            "infowindow": "<h3>" + (where!==null)? where:"" + "</h3>",
             "picture": {
               url: location.image_url,
               width: 36,
