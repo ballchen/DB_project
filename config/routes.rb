@@ -9,6 +9,9 @@ Rails.application.routes.draw do
 
   scope :api do
     get '/locations' => 'home#locations'
+    get '/places' => 'home#places'
+    get '/likes' => 'home#likes'
+    get '/users' => 'home#users'
   end
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
