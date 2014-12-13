@@ -43,8 +43,8 @@ class CrawlerController < ApplicationController
     get_place_from_status(raw_data,current_user)
     raw_data = f.get(URI.encode('me/tagged_places?field=place&limit=500'))
     get_place_from_tagged_places(raw_data,current_user)
-    raw_data = f.get(URI.encode('me/likes?limit=500'))
-    get_data_from_likes(raw_data,current_user)
+    # raw_data = f.get(URI.encode('me/likes?limit=500'))
+    # get_data_from_likes(raw_data,current_user)
     @location = Location.all
     @place = Place.all
     @like = Like.all
