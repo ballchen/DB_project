@@ -1,0 +1,12 @@
+{
+  "name": "uuid",
+  "_cacheHeaders": {
+    "ETag": "\"0ca23d0aba00118a3f00db67721dd8ded8dcf072\"",
+    "Content-Type": "application/x-gzip",
+    "Content-Disposition": "attachment; filename=UUID.js-3.2.tar.gz"
+  },
+  "_release": "e-tag:0ca23d0ab",
+  "_source": "http://github.com/LiosK/UUID.js/archive/v3.2.tar.gz",
+  "_target": "*",
+  "_originalSource": "http://github.com/LiosK/UUID.js/archive/v3.2.tar.gz"
+}

@@ -13,5 +13,6 @@
 //= require jquery
 //= require underscore
 //= require jquery_ujs
+//= require gmaps/google
 //= require angular
 //= require_tree ./components

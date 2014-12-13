@@ -7,6 +7,9 @@ Rails.application.routes.draw do
   get '/access_token' => 'crawler#get_access_token'
   get '/auth' => 'crawler#auth'
 
+  scope :api do
+    get '/locations' => 'home#locations'
+  end
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
 
