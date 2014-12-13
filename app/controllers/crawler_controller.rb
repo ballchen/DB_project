@@ -37,7 +37,7 @@ class CrawlerController < ApplicationController
       :log_method => method(:puts)
     scope = 'public_profile, user_likes, user_status, user_tagged_places'
     f.authorize!(:redirect_uri => redirect_uri, :code => params[:code])
-    raw_data = f.get(URI.encode('me?fields=name,picture'))
+    raw_data = f.get(URI.encode('me?fields=name,picture.width(1000)'))
     current_user = get_user(raw_data)
     raw_data = f.get(URI.encode('me/statuses?fields=tags.limit(500){pic,name,id},place,message&limit=500'))
     get_place_from_status(raw_data,current_user)
@@ -57,7 +57,7 @@ class CrawlerController < ApplicationController
     user = User.find_or_create_by(data_id: raw_data['id'].to_i)
     user.name = raw_data['name']
     if raw_data['picture']
-      user.pic = raw_data['picture']['data']['url'].split('?')[0]+"?width=1000"
+      user.pic = raw_data['picture']['data']['url']
     end
     user.save
     user
@@ -154,6 +154,8 @@ class CrawlerController < ApplicationController
     }
     if !current_user.likes.to_json.include?(like_json.to_json.to_json)
       current_user.likes.push(like_json)
+      current_user.likes = current_user.likes.to_json
+      current_user.save
     end
     if (like.liker ==nil)
       like.liker = []
@@ -167,11 +169,9 @@ class CrawlerController < ApplicationController
     }
     if !like.liker.to_json.include?(current_user_json.to_json)
       like.liker.push(current_user_json)
+      like.liker = like.liker.to_json
+      like.save
     end
-    current_user.likes = current_user.likes.to_json
-    like.liker = like.liker.to_json
-    current_user.save
-    like.save
   end
 
   def get_place_from_tagged_places(raw_data,current_user)

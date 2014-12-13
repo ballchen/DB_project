@@ -29,9 +29,12 @@ angular.module('app.controller', [])
           var city =(location_item.city!==null)? location_item.city: ""
           var country = (location_item.country!==null)? location_item.country: ""
           var where = (street+" "+ city +" "+ country)? street+" "+ city +" "+ country: ""
-          console.log(place.name)
+          var info = "<h3>" + place.name + "</h3>" + "<p>" + where + "</p>"
+          _.each(place.tagged_user,function(user){
+            info = info + '<img width="200" src="'+ user.user.pic+ '">' + '<h4>'+user.user.name+'</h4>'
+          })
           return {
-            "infowindow": "<h3>" + place.name + "</h3>" + "<p>" + where + "</p>",
+            "infowindow": info,
             "picture": {
               url: location_item.image_url,
               width: 36,
