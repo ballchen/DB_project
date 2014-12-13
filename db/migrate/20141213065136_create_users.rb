@@ -5,6 +5,7 @@ class CreateUsers < ActiveRecord::Migration
       t.string :pic
       t.timestamps
       t.json :been_to
+      t.json :likes
     end
     add_column :users, :data_id, :bigint
     add_index :users, :data_id, :unique => true

@@ -14,7 +14,7 @@ gem 'coffee-rails', '~> 4.0.0'
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
 # gem 'therubyracer',  platforms: :ruby
 gem 'rails_12factor', group: :production
-gem 'rest-more', :git => "git@github.com:how2945ard/rest-more.git"
+gem 'rest-more'
 gem 'pry-rails', :group => :development
 gem 'bower-rails'
 gem 'angularjs-rails'

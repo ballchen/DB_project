@@ -20,6 +20,7 @@ ActiveRecord::Schema.define(version: 20141213065136) do
     t.string   "category"
     t.string   "name"
     t.datetime "created_time"
+    t.json     "liker"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "data_id",      limit: 8
@@ -60,6 +61,7 @@ ActiveRecord::Schema.define(version: 20141213065136) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.json     "been_to"
+    t.json     "likes"
     t.integer  "data_id",    limit: 8
   end
 

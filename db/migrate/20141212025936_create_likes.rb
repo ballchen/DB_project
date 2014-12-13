@@ -4,6 +4,7 @@ class CreateLikes < ActiveRecord::Migration
       t.string :category
       t.string :name
       t.datetime :created_time
+      t.json :liker
       t.timestamps
     end
     add_column :likes, :data_id, :bigint
