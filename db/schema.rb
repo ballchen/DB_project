@@ -11,10 +11,25 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141213065136) do
+ActiveRecord::Schema.define(version: 20141222141609) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "events", force: true do |t|
+    t.string   "location"
+    t.integer  "attending_count"
+    t.text     "description"
+    t.string   "cover"
+    t.string   "name"
+    t.datetime "start_time"
+    t.json     "participant"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "data_id",         limit: 8
+  end
+
+  add_index "events", ["data_id"], name: "index_events_on_data_id", unique: true, using: :btree
 
   create_table "likes", force: true do |t|
     t.string   "category"
@@ -58,10 +73,11 @@ ActiveRecord::Schema.define(version: 20141213065136) do
   create_table "users", force: true do |t|
     t.string   "name"
     t.string   "pic"
-    t.datetime "created_at"
-    t.datetime "updated_at"
     t.json     "been_to"
     t.json     "likes"
+    t.json     "events"
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer  "data_id",    limit: 8
   end
 

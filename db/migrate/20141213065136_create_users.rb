@@ -3,9 +3,10 @@ class CreateUsers < ActiveRecord::Migration
     create_table :users do |t|
       t.string :name
       t.string :pic
-      t.timestamps
       t.json :been_to
       t.json :likes
+      t.json :events
+      t.timestamps
     end
     add_column :users, :data_id, :bigint
     add_index :users, :data_id, :unique => true

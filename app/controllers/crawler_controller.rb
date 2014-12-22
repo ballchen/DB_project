@@ -14,13 +14,9 @@ class CrawlerController < ApplicationController
     f = RC::Facebook.new :app_id => app_id,
       :secret => secret,
       :log_method => method(:puts)
-    scope = 'public_profile, user_likes, user_status, user_tagged_places'
-
+    scope = 'public_profile, user_likes, user_status, user_tagged_places,user_events'
     # Redirect the user to:
     redirect_to f.authorize_url(:redirect_uri => redirect_uri, :scope => scope)
-
-
-    # Then we could call the API:
   end
   def auth
     if Rails.env.development?
@@ -35,24 +31,82 @@ class CrawlerController < ApplicationController
     f = RC::Facebook.new :app_id => app_id,
       :secret => secret,
       :log_method => method(:puts)
-    scope = 'public_profile, user_likes, user_status, user_tagged_places'
     f.authorize!(:redirect_uri => redirect_uri, :code => params[:code])
     raw_data = f.get(URI.encode('me?fields=name,picture.width(1000)'))
     current_user = get_user(raw_data)
-    raw_data = f.get(URI.encode('me/statuses?fields=tags.limit(500){pic,name,id},place,message&limit=500'))
-    get_place_from_status(raw_data,current_user)
-    raw_data = f.get(URI.encode('me/tagged_places?field=place&limit=500'))
-    get_place_from_tagged_places(raw_data,current_user)
-    # raw_data = f.get(URI.encode('me/likes?limit=500'))
-    # get_data_from_likes(raw_data,current_user)
+    Thread.new do
+      raw_data = f.get(URI.encode('me/likes?limit=500'))
+      get_data_from_likes(raw_data,current_user)
+      current_user.save
+      ActiveRecord::Base.connection.close
+    end
+    Thread.new do
+      raw_data = f.get(URI.encode('me/statuses?fields=tags.limit(500){pic,name,id},place,message&limit=500'))
+      get_place_from_status(raw_data,current_user)
+      raw_data = f.get(URI.encode('me/tagged_places?field=place&limit=500'))
+      get_place_from_tagged_places(raw_data,current_user)
+      current_user.save
+      ActiveRecord::Base.connection.close
+    end
+    Thread.new do
+      raw_data = f.get(URI.encode('me/events?fields=attending_count,description,name,id,cover&since=631152000&limit=500'))
+      get_event_from_events(raw_data,current_user)
+      current_user.save
+      ActiveRecord::Base.connection.close
+    end
     @location = Location.all
     @place = Place.all
     @like = Like.all
     @user = User.all
-    render json: {location: @location, place: @place, like: @like,user: @user}
+    @event = Event.all
+    render json: {location: @location, place: @place, like: @like,user: @user,event: @event}
   end
 
   private
+  def get_event_data event_data,current_user
+    event = Event.find_or_create_by(data_id: event_data['id'].to_i)
+    event.location =  event_data['location']
+    event.attending_count =  event_data['attending_count'].to_i
+    event.description =  event_data['description']
+    if(event_data['cover'])
+      event.cover =  event_data['cover']['source']
+    end
+    event.name =  event_data['name']
+    event.start_time =  event_data['start_time']
+    if(event.participant==nil)
+      event.participant = []
+    end
+    current_user_json = {
+      id: current_user.id,
+      user: {
+        pic: current_user.pic,
+        name: current_user.name
+      }
+    }
+    if !event.participant.to_json.include?(current_user_json.to_json)
+      event.participant.push(current_user_json)
+    end
+    if(current_user.events==nil)
+      current_user.events = []
+    end
+    event_json = {
+      id: event.id,
+      event: {
+        name: event.name,
+        description: event.description,
+        cover: event.cover,
+        start_time: event.start_time,
+        location: event.location,
+        attending_count: event.attending_count
+      }
+    }
+    if !current_user.events.to_json.include?(event_json.to_json)
+      current_user.events.push(event_json)
+    end
+    event.participant = event.participant.to_json
+    current_user.events = current_user.events.to_json
+    event.save
+  end
   def get_user raw_data
     user = User.find_or_create_by(data_id: raw_data['id'].to_i)
     user.name = raw_data['name']
@@ -132,7 +186,6 @@ class CrawlerController < ApplicationController
     location.save
     place.location_id = location.id
     current_user.been_to = current_user.been_to.to_json
-    current_user.save
     place.tagged_user = place.tagged_user.to_json
     place.save
   end
@@ -155,7 +208,7 @@ class CrawlerController < ApplicationController
     if !current_user.likes.to_json.include?(like_json.to_json.to_json)
       current_user.likes.push(like_json)
       current_user.likes = current_user.likes.to_json
-      current_user.save
+
     end
     if (like.liker ==nil)
       like.liker = []
@@ -170,8 +223,8 @@ class CrawlerController < ApplicationController
     if !like.liker.to_json.include?(current_user_json.to_json)
       like.liker.push(current_user_json)
       like.liker = like.liker.to_json
-      like.save
     end
+    like.save
   end
 
   def get_place_from_tagged_places(raw_data,current_user)
@@ -183,6 +236,15 @@ class CrawlerController < ApplicationController
     if( raw_data['paging'] && raw_data['paging']['next'] )
       raw_data = ActiveSupport::JSON.decode Net::HTTP.get(URI.parse(raw_data['paging']['next']))
       get_place_from_tagged_places(raw_data,current_user)
+    end
+  end
+  def get_event_from_events(raw_data,current_user)
+    raw_data['data'].each do | data |
+      get_event_data(data, current_user)
+    end
+    if( raw_data['paging'] && raw_data['paging']['next'] )
+      raw_data = ActiveSupport::JSON.decode Net::HTTP.get(URI.parse(raw_data['paging']['next']))
+      get_event_data(raw_data,current_user)
     end
   end
 
