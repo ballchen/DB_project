@@ -1,5 +1,9 @@
 class HomeController < ApplicationController
   def index
+    @controller = 'map'
+  end
+  def chart
+    @controller = 'chart'
   end
   def places
     places = Place.all

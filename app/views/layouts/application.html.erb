@@ -13,9 +13,10 @@
     <div ng-controller='<%= @controller || "index" %>'>
       <%= yield %>
     </div>
-    <script type="text/javascript" src="//maps.google.com/maps/api/js?v=3.13&amp;sensor=false&amp;libraries=geometry&amp;language=zh-tw"></script>
-    <script type='text/javascript' src='//google-maps-utility-library-v3.googlecode.com/svn/tags/markerclustererplus/2.0.14/src/markerclusterer_packed.js'></script>
+    <script src="//maps.google.com/maps/api/js?v=3.13&amp;sensor=false&amp;libraries=geometry&amp;language=zh-tw"></script>
+    <script src='//google-maps-utility-library-v3.googlecode.com/svn/tags/markerclustererplus/2.0.14/src/markerclusterer_packed.js'></script>
     <%= javascript_include_tag "application" %>
+    <script src="http://code.highcharts.com/stock/highstock.src.js"></script>
     <%= javascript_include_tag "angular_app" %>
     <script src="//cdnjs.cloudflare.com/ajax/libs/gsap/1.15.0/TweenMax.min.js"></script>
   </body>
