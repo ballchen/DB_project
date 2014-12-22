@@ -18,7 +18,7 @@ angular.module('app.controller', [])
 
       $http({
         method: "GET",
-        url: "/api/locations"
+        url: "/api/places"
       }).success(function(data, status, headers, config) {
         $scope.places = data;
         console.log(data)
