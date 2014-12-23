@@ -15,3 +15,7 @@ default: &default
 development:
   <<: *default
   database: DB
+
+production:
+  <<: *default
+  database: DB
