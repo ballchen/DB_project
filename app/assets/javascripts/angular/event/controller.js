@@ -6,7 +6,7 @@ angular.module('event.controller', [])
     function(
       $scope,
       $http,
-      $window,
+      $window
     ) {
       console.log('event')
       $http.get('/api/events').success(function(data, status, headers, config) {
