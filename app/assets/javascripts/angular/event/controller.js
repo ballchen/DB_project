@@ -3,12 +3,10 @@ angular.module('event.controller', [])
     '$scope',
     '$http',
     '$window',
-    '$filter',
     function(
       $scope,
       $http,
       $window,
-      $filter
     ) {
       console.log('event')
       $http.get('/api/events').success(function(data, status, headers, config) {
