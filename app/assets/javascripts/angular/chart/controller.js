@@ -9,15 +9,10 @@ angular.module('chart.controller', [])
       $window
     ) {
       console.log('chart')
-
-      function addCate(category){
-
-      }
       $http({
         method: "GET",
         url: "/api/likes"
       }).success(function(data, status, headers, config) {
-        console.log(data)
         var total_category = [];
         var cate;
         var index;

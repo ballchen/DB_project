@@ -7,12 +7,14 @@ Rails.application.routes.draw do
   get '/chart' => 'home#chart'
   get '/access_token' => 'crawler#get_access_token'
   get '/auth' => 'crawler#auth'
+  get '/event' => 'home#event'
 
   scope :api do
     get '/locations' => 'home#locations'
     get '/places' => 'home#places'
     get '/likes' => 'home#likes'
     get '/users' => 'home#users'
+    get '/events' => 'home#events'
   end
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

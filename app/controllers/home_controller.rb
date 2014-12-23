@@ -5,6 +5,14 @@ class HomeController < ApplicationController
   def chart
     @controller = 'chart'
   end
+  def event
+    @controller = 'event'
+  end
+
+  def events
+    event = Event.all
+    render json: event.to_json
+  end
   def places
     places = Place.all
     render json: places.to_json({:include => :location})
