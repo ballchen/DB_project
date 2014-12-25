@@ -3,7 +3,8 @@ Rails.application.routes.draw do
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-  root 'home#index'
+  root 'home#home'
+  get '/place' => 'home#index'
   get '/chart' => 'home#chart'
   get '/access_token' => 'crawler#get_access_token'
   get '/auth' => 'crawler#auth'

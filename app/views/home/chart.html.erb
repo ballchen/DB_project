@@ -1,1 +1,88 @@
+<head>
+	<script src="/Chart.js"></script>
+	<style>
+		body{		
+			padding: 0;
+			margin: 0;		
+		}
+		#canvas-holder{
+			width:30%;
+		}
+		#user-photo{
+		text-align: center;
+		}
+		#user-photo img{
+			border-radius: 200px;
+			border: 5px white solid;
+			padding: 3px;
+			margin-top: 30px;
+			width: 100px;
+		}
+		h1{
+			text-align: center;
+		}
+		.back .button{
+			color: white;
+		}
+		.back{
+			position: fixed;
+			margin: 20px;
+		}
+		#canvas-holder{
+			margin: 15px auto;
+		}
+	</style>
+		<script>
+		var doughnutData = [
+				{
+					value: 300,
+					color:"#F7464A",
+					highlight: "#FF5A5E",
+					label: "Red"
+				},
+				{
+					value: 50,
+					color: "#46BFBD",
+					highlight: "#5AD3D1",
+					label: "Green"
+				},
+				{
+					value: 100,
+					color: "#FDB45C",
+					highlight: "#FFC870",
+					label: "Yellow"
+				},
+				{
+					value: 40,
+					color: "#949FB1",
+					highlight: "#A8B3C5",
+					label: "Grey"
+				},
+				{
+					value: 120,
+					color: "#4D5360",
+					highlight: "#616774",
+					label: "Dark Grey"
+				}
+
+			];
+
+			window.onload = function(){
+				var ctx = document.getElementById("chart-area").getContext("2d");
+				window.myDoughnut = new Chart(ctx).Doughnut(doughnutData, {responsive : true});
+			};
+	</script>
+</head>
+<body>
+	<div class="back"><a class="button" href="/"><i class="icon-chevron-left icon-white"></i>Back to home</a></div>
+	<div id="user-photo">
+	    <img src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xap1/v/t1.0-1/p160x160/10354078_881803278498402_6417331267732222433_n.jpg?oh=8caa83c7f2d323a8178771cef230a4f9&oe=550639F7&__gda__=1427317490_c598f2e2157ee188a3cd03a5bc47c1a1">
+	</div>
+	<h1>我的粉絲專頁紀錄</h1>
+	</br><!-- 
+			<div id="canvas-holder">
+				<canvas id="chart-area" width="500" height="500"/>
+			</div> -->
+
 <highchart id="chart1" config="chartConfig"></highchart>
+</body>
