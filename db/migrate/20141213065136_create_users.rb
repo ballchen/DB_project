@@ -6,6 +6,10 @@ class CreateUsers < ActiveRecord::Migration
       t.json :been_to
       t.json :likes
       t.json :events
+      t.json :majors
+      t.json :schools
+      t.string :hometown
+      t.string :location
       t.timestamps
     end
     add_column :users, :data_id, :bigint

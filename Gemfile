@@ -18,6 +18,9 @@ gem 'rest-more'
 gem 'pry-rails', :group => :development
 gem 'bower-rails'
 gem 'angularjs-rails'
+gem 'unicorn'
+gem 'rack-timeout'
+gem 'foreman'
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks

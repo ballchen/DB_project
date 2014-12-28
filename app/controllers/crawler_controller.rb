@@ -14,7 +14,7 @@ class CrawlerController < ApplicationController
     f = RC::Facebook.new :app_id => app_id,
       :secret => secret,
       :log_method => method(:puts)
-    scope = 'public_profile, user_likes, user_status, user_tagged_places,user_events'
+    scope = 'public_profile, user_likes, user_status, user_tagged_places,user_events,user_hometown,user_education_history,user_location'
     # Redirect the user to:
     redirect_to f.authorize_url(:redirect_uri => redirect_uri, :scope => scope)
   end
@@ -32,7 +32,7 @@ class CrawlerController < ApplicationController
       :secret => secret,
       :log_method => method(:puts)
     f.authorize!(:redirect_uri => redirect_uri, :code => params[:code])
-    raw_data = f.get(URI.encode('me?fields=name,picture.width(1000)'))
+    raw_data = f.get(URI.encode('me?fields=name,education,hometown,location,picture.width(1000)'))
     current_user = get_user(raw_data)
     Thread.new do
       raw_data = f.get(URI.encode('me/likes?limit=500'))
@@ -54,12 +54,23 @@ class CrawlerController < ApplicationController
       current_user.save
       ActiveRecord::Base.connection.close
     end
-    @location = Location.all
-    @place = Place.all
-    @like = Like.all
-    @user = User.all
-    @event = Event.all
-    render json: {location: @location, place: @place, like: @like,user: @user,event: @event}
+    # location = Location.all
+    # place = Place.all
+    # like = Like.all
+    # user = User.all
+    # event = Event.all
+    # major = Major.all
+    # school = School.all
+    # render json: {
+      # location: location,
+      # place: place,
+      # like: like,
+      # user: user,
+      # event: event,
+      # major: major,
+      # school: school
+    # }
+    redirect_to '/'
   end
 
   private
@@ -110,10 +121,78 @@ class CrawlerController < ApplicationController
   def get_user raw_data
     user = User.find_or_create_by(data_id: raw_data['id'].to_i)
     user.name = raw_data['name']
+    user.hometown = raw_data['hometown']['name'] if raw_data['hometown']
+    user.location = raw_data['location']['name'] if raw_data['location']
     if raw_data['picture']
       user.pic = raw_data['picture']['data']['url']
     end
+    if raw_data['education']
+      raw_data['education'].each do |education|
+        school = School.find_or_create_by(data_id: education['school']['id'].to_i)
+        school.data_id = education['school']['id'].to_i
+        school.name = education['school']['name']
+        school.school_type = education['type']
+        user_json = {
+          id: user.id,
+          user: {
+            pic: user.pic,
+            name: user.name
+          }
+        }
+        if education['concentration']
+          education['concentration'].each do | major_data |
+            major = Major.find_or_create_by(data_id: major_data["id"].to_i)
+            major.name = major_data["name"]
+            major_json = {
+              name: major.name
+            }
+            if major.students == nil
+              major.students =[]
+            end
+            if !major.students.to_json.include?(user_json.to_json)
+              major.students.push(user_json)
+            end
+            if user.majors == nil
+              user.majors =[]
+            end
+            if !user.majors.to_json.include?(major_json.to_json)
+              user.majors.push(major_json)
+            end
+            if school.majors == nil
+              school.majors =[]
+            end
+            if !school.majors.to_json.include?(major_json.to_json)
+              school.majors.push(major_json)
+            end
+            major.students = major.students.to_json
+            major.save
+          end
+        end
+        if user.schools ==nil
+          user.schools =[]
+        end
+        education_json={
+          name: school.name,
+          type: school.school_type
+        }
+        if !user.schools.to_json.include?(education_json.to_json)
+          user.schools.push(education_json)
+        end
+        if school.students == nil
+          school.students = []
+        end
+        if !school.students.to_json.include?(user_json.to_json)
+          school.students.push(user_json)
+        end
+        school.students = school.students.to_json
+        school.majors = school.majors.to_json
+        school.save
+      end
+    end
+    user.schools = user.schools.to_json
+    user.majors = user.majors.to_json
     user.save
+    session[:current_user_id] = user.id
     user
   end
   def get_data_from_place_object(data,current_user)
@@ -122,6 +201,17 @@ class CrawlerController < ApplicationController
     place.name = (data['place']['name'] == nil)? place.name : data['place']['name']
     place.updated_time = (data['updated_time'] == nil)? place.updated_time : data['updated_time']
     place.message = (data['message'] == nil)? place.message : data['message']
+    conditions = { :latitude => data['place']['location']['latitude'],
+                   :longitude => data['place']['location']['longitude']
+                   }
+    location = Location.where(conditions).first_or_create
+    location.city = data['place']['location']['city']
+    location.country = data['place']['location']['country']
+    location.latitude = data['place']['location']['latitude']
+    location.longitude = data['place']['location']['longitude']
+    location.street = data['place']['location']['street']
+    location.zip = data['place']['location']['zip']
+    location.save
     if(place.tagged_user==nil)
       place.tagged_user = []
     end
@@ -132,7 +222,9 @@ class CrawlerController < ApplicationController
       id: place.id,
       place: {
         name: place.name,
-        message: place.message
+        message: place.message,
+        latitude: location.latitude,
+        longitude: location.longitude
       }
     }
     if !current_user.been_to.to_json.include?(place_json.to_json)
@@ -173,17 +265,6 @@ class CrawlerController < ApplicationController
         user.save
       end
     end
-    conditions = { :latitude => data['place']['location']['latitude'],
-                   :longitude => data['place']['location']['longitude']
-                   }
-    location = Location.where(conditions).first_or_create
-    location.city = data['place']['location']['city']
-    location.country = data['place']['location']['country']
-    location.latitude = data['place']['location']['latitude']
-    location.longitude = data['place']['location']['longitude']
-    location.street = data['place']['location']['street']
-    location.zip = data['place']['location']['zip']
-    location.save
     place.location_id = location.id
     current_user.been_to = current_user.been_to.to_json
     place.tagged_user = place.tagged_user.to_json
@@ -191,7 +272,7 @@ class CrawlerController < ApplicationController
   end
 
   def paring_likes(data,current_user)
-    like = Like.find_or_create_by(data_id: data['id'].to_i)
+    like = Like.find_or_create_by(data_id: data['id'].to_i,name:data['name'])
     like.category = data['category']
     like.name = data['name']
     like.created_time = data['created_time']

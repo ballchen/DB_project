@@ -34,7 +34,7 @@ body{
 	text-align: center;
 	margin-top: 100px;
 	padding-top: 50px;
-	
+
 }
 .event{
 	width:100%;
@@ -52,7 +52,7 @@ body{
 	text-align: center;
 }
 #user-photo img{
-	border-radius: 200px;
+	border-radius: 100%;
 	border: 7px white solid;
 	padding: 3px;
 	margin-top: 50px;

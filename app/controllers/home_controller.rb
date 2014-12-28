@@ -1,5 +1,5 @@
 class HomeController < ApplicationController
-  def index
+  def map
     @controller = 'map'
   end
   def chart
@@ -8,25 +8,49 @@ class HomeController < ApplicationController
   def event
     @controller = 'event'
   end
-
   def events
-    event = Event.all
-    render json: event.to_json
+    events = Event.all.to_json
+    target_event = []
+    ActiveSupport::JSON.decode(events).each do |event|
+      if event['participant'].to_json.include?('"id":'+params[:id])
+        target_event.push(event)
+      end
+    end
+    render json: target_event
   end
   def places
-    places = Place.all
-    render json: places.to_json({:include => :location})
+    places = Place.all.to_json({:include => :location})
+    target_place = []
+    ActiveSupport::JSON.decode(places).each do |place|
+      if place['tagged_user'].to_json.include?('"id":'+params[:id])
+        target_place.push(place)
+      end
+    end
+    render json: target_place
   end
   def locations
     locations = Location.all
     render json: locations.to_json
   end
   def likes
-    likes = Like.all
-    render json: likes.to_json
+    likes = Like.all.to_json
+    target_like = []
+    ActiveSupport::JSON.decode(likes).each do |like|
+      if like['liker'].to_json.include?('"id":'+params[:id])
+        target_like.push(like)
+      end
+    end
+    render json: target_like
   end
   def users
     users = User.all
     render json: users.to_json
+  end
+  def logout
+    session[:current_user_id] = nil
+    redirect_to '/'
+  end
+  def current_user_id
+    render json: current_user.id
   end
 end

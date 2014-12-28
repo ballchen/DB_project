@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141222141609) do
+ActiveRecord::Schema.define(version: 20141228045108) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -56,6 +56,16 @@ ActiveRecord::Schema.define(version: 20141222141609) do
 
   add_index "locations", ["latitude", "longitude"], name: "index_locations_on_latitude_and_longitude", unique: true, using: :btree
 
+  create_table "majors", force: true do |t|
+    t.string   "name"
+    t.json     "students"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "data_id",    limit: 8
+  end
+
+  add_index "majors", ["data_id"], name: "index_majors_on_data_id", unique: true, using: :btree
+
   create_table "places", force: true do |t|
     t.string   "name"
     t.text     "description"
@@ -70,12 +80,29 @@ ActiveRecord::Schema.define(version: 20141222141609) do
 
   add_index "places", ["data_id"], name: "index_places_on_data_id", unique: true, using: :btree
 
+  create_table "schools", force: true do |t|
+    t.string   "name"
+    t.string   "country"
+    t.string   "school_type"
+    t.json     "students"
+    t.json     "majors"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "data_id",     limit: 8
+  end
+
+  add_index "schools", ["data_id"], name: "index_schools_on_data_id", unique: true, using: :btree
+
   create_table "users", force: true do |t|
     t.string   "name"
     t.string   "pic"
     t.json     "been_to"
     t.json     "likes"
     t.json     "events"
+    t.json     "majors"
+    t.json     "schools"
+    t.string   "hometown"
+    t.string   "location"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "data_id",    limit: 8

@@ -4,18 +4,20 @@ Rails.application.routes.draw do
 
   # You can have the root of your site routed with "root"
   root 'home#home'
-  get '/place' => 'home#index'
+  get '/place' => 'home#map'
   get '/chart' => 'home#chart'
   get '/access_token' => 'crawler#get_access_token'
   get '/auth' => 'crawler#auth'
+  get '/logout' => 'home#logout'
   get '/event' => 'home#event'
 
   scope :api do
+    get '/get_current_user' => 'home#current_user_id'
     get '/locations' => 'home#locations'
-    get '/places' => 'home#places'
-    get '/likes' => 'home#likes'
+    get '/places/:id' => 'home#places'
+    get '/likes/:id' => 'home#likes'
     get '/users' => 'home#users'
-    get '/events' => 'home#events'
+    get '/events/:id' => 'home#events'
   end
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
