@@ -122,8 +122,12 @@ class CrawlerController < ApplicationController
   def get_user raw_data
     user = User.find_or_create_by(data_id: raw_data['id'].to_i)
     user.name = raw_data['name']
-    user.hometown = raw_data['hometown']['name'] if raw_data['hometown']
-    user.location = raw_data['location']['name'] if raw_data['location']
+    if raw_data['hometown']
+      user.hometown = raw_data['hometown']['name']
+    end
+    if raw_data['location']
+      user.location = raw_data['location']['name']
+    end
     if raw_data['picture']
       user.pic = raw_data['picture']['data']['url']
     end
