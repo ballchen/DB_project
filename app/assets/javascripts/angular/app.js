@@ -5,10 +5,10 @@ angular.module('app', [
   'highcharts-ng',
   'angularMoment',
 
+  'app.controller',
   'map',
   'chart',
-  'event',
-  'app.controller'
+  'event'
   ])
 .run(function(amMoment) {
     amMoment.changeLocale('zh-tw');

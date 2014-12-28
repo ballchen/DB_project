@@ -5,6 +5,5 @@ angular.module('app.controller', [])
       $scope
     ) {
       console.log('index')
-
     }
   ])

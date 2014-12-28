@@ -6,10 +6,10 @@ angular.module('app', [
   'highcharts-ng',
   'angularMoment',
 
+  'app.controller',
   'map',
   'chart',
-  'event',
-  'app.controller'
+  'event'
   ])
 .run(function(amMoment) {
     amMoment.changeLocale('zh-tw');
@@ -34,38 +34,32 @@ angular.module('chart.controller', [])
       $window
     ) {
       console.log('chart')
-      $http({
-        method: "GET",
-        url: "/api/likes"
-      }).success(function(data, status, headers, config) {
-        var total_category = [];
-        var cate;
-        var index;
-        _.each(data,function(like){
-          cate = _.findWhere(total_category, {name: like.category})
-          if( cate !== undefined){
-            index = _.indexOf(total_category,cate)
-            total_category[index].y = total_category[index].y+1;
-          }else{
-            total_category.push({
-              name: like.category,
-              y: 1
-            })
-          }
+      $http.get('/api/get_current_user').success(function(data, status, headers, config) {
+        $scope.current_user_id = data
+        $http({
+          method: "GET",
+          url: "/api/likes/"+$scope.current_user_id
+        }).success(function(data, status, headers, config) {
+          var doughnutData = [];
+          var cate;
+          var index;
+          var colorArray = ["#637b85","#2c9c69","#dbba34","#c62f29","#F38630","#E0E4CC","#69D2E7", '#003399','#3366AA','#FFD700','#FF4500','#FFFF00']
+          _.each(data,function(like){
+            cate = _.findWhere(doughnutData, {label: like.category})
+            if( cate !== undefined){
+              index = _.indexOf(doughnutData,cate)
+              doughnutData[index].value = doughnutData[index].value+1;
+            }else{
+              doughnutData.push({
+                label: like.category,
+                value: 1,
+                color: colorArray[doughnutData.length%colorArray.length]
+              })
+            }
+          })
+          var ctx = document.getElementById("chart-area").getContext("2d");
+          window.myDoughnut = new Chart(ctx).Doughnut(doughnutData, {responsive : true});
         })
-        $scope.chartConfig = {
-          options: {
-              chart: {
-                  type: 'pie'
-              }
-          },
-          series: [{
-              data: total_category
-          }],
-          title: {
-              text: 'Hello'
-          }
-        }
       })
     }
   ])
@@ -96,24 +90,30 @@ angular.module('event.controller', [])
       $window
     ) {
       console.log('event')
-      $http.get('/api/events').success(function(data, status, headers, config) {
-        $scope.years = []
-        var year
-        var event_year
-        _.each(data,function(event){
-          if(event.start_time!==null){
-            event_year= moment(event.start_time).format('YYYY')
-            year = _.findWhere($scope.years, {year: event_year})
-            if( year !== undefined){
-              index = _.indexOf($scope.years,year)
-              $scope.years[index].events.push(event)
-            }else{
-              $scope.years.push({
-                year: event_year,
-                events: [event]
-              })
+      $http.get('/api/get_current_user').success(function(data, status, headers, config) {
+        $scope.current_user_id = data
+        $http.get('/api/events/'+$scope.current_user_id).success(function(data, status, headers, config) {
+          $scope.years = []
+          var year
+          var event_year
+          _.each(data,function(event){
+            if(event.start_time!==null){
+              event_year= moment(event.start_time).format('YYYY')
+              year = _.findWhere($scope.years, {year: event_year})
+              if( year !== undefined){
+                index = _.indexOf($scope.years,year)
+                $scope.years[index].events.push(event)
+              }else{
+                $scope.years.push({
+                  year: event_year,
+                  events: [event]
+                })
+              }
             }
-          }
+          })
+          $scope.years = _.sortBy($scope.years,function(year){
+            return -year.year
+          })
         })
       })
     }
@@ -141,56 +141,58 @@ angular.module('map.controller', [])
         }
       });
       var markers;
-      $http({
-        method: "GET",
-        url: "/api/places"
-      }).success(function(data, status, headers, config) {
-        $scope.places = data;
-        var location_item;
-        var markerInfos = _.map($scope.places, function(place) {
-          location_item = place.location
-          var street = (location_item.street!==null)? location_item.street: ""
-          var city =(location_item.city!==null)? location_item.city: ""
-          var country = (location_item.country!==null)? location_item.country: ""
-          var where = (street+" "+ city +" "+ country)? street+" "+ city +" "+ country: ""
-          var info = "<h3>" + place.name + "</h3>" + "<p>" + where + "</p>"
-          _.each(place.tagged_user,function(user){
-            info = info + '<img width="200" src="'+ user.user.pic+ '">' + '<h4>'+user.user.name+'</h4>'
+      $http.get('/api/get_current_user').success(function(data, status, headers, config) {
+        $scope.current_user_id = data
+        $http({
+          method: "GET",
+          url: "/api/places/" + $scope.current_user_id
+        }).success(function(data, status, headers, config) {
+          $scope.places = data;
+          var location_item;
+          var markerInfos = _.map($scope.places, function(place) {
+            location_item = place.location
+            var street = (location_item.street !== null) ? location_item.street : ""
+            var city = (location_item.city !== null) ? location_item.city : ""
+            var country = (location_item.country !== null) ? location_item.country : ""
+            var where = (street + " " + city + " " + country) ? street + " " + city + " " + country : ""
+            var info = "<h3>" + place.name + "</h3>" + "<p>" + where + "</p>"
+            _.each(place.tagged_user, function(user) {
+              info = info + '<img width="200" src="' + user.user.pic + '">' + '<h4>' + user.user.name + '</h4>'
+            })
+            return {
+              "infowindow": info,
+              "picture": {
+                url: location_item.image_url,
+                width: 36,
+                height: 36
+              },
+              "lat": (location_item.latitude) ? (location_item.latitude) : (26.0 + location_item.id * 0.001),
+              "lng": (location_item.longitude) ? (location_item.longitude) : (123.0 + location_item.id * 0.001),
+              "id": location_item.id
+            };
           })
-          return {
-            "infowindow": info,
-            "picture": {
-              url: location_item.image_url,
-              width: 36,
-              height: 36
-            },
-            "lat": (location_item.latitude) ? (location_item.latitude) : (26.0 + location_item.id * 0.001),
-            "lng": (location_item.longitude) ? (location_item.longitude) : (123.0 + location_item.id * 0.001),
-            "id": location_item.id
-          };
-        })
-        handler.buildMap({
-          provider: {},
-          internal: {
-            id: 'map'
-          }
-        }, function() {
-          markers = markerInfos.map(function(m) {
-            var marker = handler.addMarker(m);
-            marker.serviceObject.id = m.id;
+          handler.buildMap({
+            provider: {},
+            internal: {
+              id: 'map'
+            }
+          }, function() {
+            markers = markerInfos.map(function(m) {
+              var marker = handler.addMarker(m);
+              marker.serviceObject.id = m.id;
 
-            google.maps.event.addListener(marker.serviceObject, 'click', function() {
-              $scope.location = _.find($scope.places, function(location) {
-                return location.id == marker.serviceObject.id
+              google.maps.event.addListener(marker.serviceObject, 'click', function() {
+                $scope.location = _.find($scope.places, function(location) {
+                  return location.id == marker.serviceObject.id
+                });
+                $scope.$apply();
               });
-              $scope.$apply();
+              return marker;
             });
-            return marker;
+            handler.bounds.extendWith(markers);
+            handler.fitMapToBounds();
           });
-
-          handler.bounds.extendWith(markers);
-          handler.fitMapToBounds();
-        });
+        })
       })
     }
   ])
