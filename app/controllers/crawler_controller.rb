@@ -37,6 +37,7 @@ class CrawlerController < ApplicationController
     Thread.new do
       raw_data = f.get(URI.encode('me/likes?limit=500'))
       get_data_from_likes(raw_data,current_user)
+      current_user.clean_like
       current_user.save
       ActiveRecord::Base.connection.close
     end
