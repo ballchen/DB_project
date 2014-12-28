@@ -12,8 +12,11 @@ class User < ActiveRecord::Base
     self.likes = likes
   end
   def education
-    if self.schools && self.majors
-      self.schools.last['name'] + " " + self.majors.last['name']
+    if self.schools
+      self.schools.last['name']
+      if self.majors
+        self.schools.last['name'] + " " + self.majors.last['name']
+      end
     end
   end
 end
