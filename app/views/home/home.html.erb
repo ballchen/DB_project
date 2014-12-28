@@ -1,5 +1,64 @@
+<style>
+    body{
+        height: 100%;
+    }
+    .logo_else{
+        text-align: center;
+        padding-top: 20%;
+    }
+    .logo_else img{
+        width: 450px;
+    }
+    .login{
+        text-align: center;
+        margin-top: 16%;
+    }
+    .login img{
+        width: 250px;
+    }
+    #logo{
+        position: fixed;
+        margin: 30px 30px;
+        left: 0;
+    }
+    #logo img{
+        height: 50px;
+        width: auto;
+    }
+    #logo:hover{
+        cursor: default;
+    }
+    .home{
+        height: 100%;
+    }
+    #user-photo{
+        margin-top: 2%;
+    }
+    #user-photo img{
+        width: 180px;
+        margin-top: 0;
+    }
+    .logout{
+        text-align: right;
+        padding: 30px 30px 0 0 ;
+    }
+    .logout a{
+        color: white;
+    }
+    #user-about {
+        margin: 5% auto;
+        height: 10%;
+    }
+
+</style>
 <body>
     <%if current_user  %>
+        <div id="logo">
+            <div style="display:inline-block;"><img src="/images/dbproject.png"></div>
+        </div>
+        <div class="logout">
+                <a href="/logout">Log out</a>
+        </div>
         <div class="home" id="home">
 	    	<div id="user-photo">
     			<img src="<%= current_user.pic %>">
@@ -17,9 +76,17 @@
 	    		<a href="event"><div id="nav2"><img src="/images/event.png"><p>活動紀錄</p></div></a>
 	    		<a href="chart"><div id="nav3"><img src="/images/page.png"><p>粉絲專頁</p></div></a>
 	    	</div>
-            <a href="/logout">LOGOUT</a>
+            <!-- <a href="/logout">LOGOUT</a> -->
+
         </div>
     <% else %>
-        <a href="/access_token">ACCESS TOKEN</a>
+<!--         <a href="/access_token">ACCESS TOKEN</a> -->
+        <div class="logo_else">
+            <img src="/images/dbproject.png"/>
+        </div>
+        <div class="login">
+            <a href="/access_token"><img src="/images/fb_login_button.png"></a>
+        </div>
+
     <% end %>
 </body>
