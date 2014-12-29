@@ -11,7 +11,7 @@ angular.module('map.controller', [])
       function inTaiwan(lat,lan){
         var lat_d = (lat-23.69781)*(lat-23.69781)
         var lan_d = (lan-120.960515)*(lan-120.960515)
-        var range = 1.5
+        var range = 2
         return !(lan_d>range*range||lat_d>range*range)
       }
       console.log('map')
