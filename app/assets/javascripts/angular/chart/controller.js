@@ -24,20 +24,27 @@ angular.module('chart.controller', [])
           url: url
         }).success(function(data, status, headers, config) {
           var doughnutData = [];
+          var likeData = []
           var cate;
           var index;
           var colorArray = ["#637b85","#2c9c69","#dbba34","#c62f29","#F38630","#E0E4CC","#69D2E7", '#003399','#3366AA','#FFD700','#FF4500','#FFFF00']
+          var likesNum = data.length
           _.each(data,function(like){
-            cate = _.findWhere(doughnutData, {label: like.category})
+            cate = _.findWhere(likeData, {label: like.category})
             if( cate !== undefined){
-              index = _.indexOf(doughnutData,cate)
-              doughnutData[index].value = doughnutData[index].value+1;
+              index = _.indexOf(likeData,cate)
+              likeData[index].value = likeData[index].value+1;
             }else{
-              doughnutData.push({
+              likeData.push({
                 label: like.category,
                 value: 1,
-                color: colorArray[doughnutData.length%colorArray.length]
+                color: colorArray[likeData.length%colorArray.length]
               })
+            }
+          })
+          _.each(likeData ,function(like){
+            if(like.value>likesNum*0.01){
+              doughnutData.push(like)
             }
           })
           var ctx = document.getElementById("chart-area").getContext("2d");

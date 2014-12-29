@@ -25,9 +25,11 @@
 </style>
 
 <div class="back"><a class="button" href="/"><i class="icon-chevron-left icon-white"></i>Back to home</a></div>
-<div id="user-photo">
-    <img src="<%= current_user.pic %>">
-</div>
+<% if current_user %>
+  <div id="user-photo">
+      <img src="<%= current_user.pic %>">
+  </div>
+<% end %>
 <h1 ng-if='!all' ng-cloak>我的打卡紀錄</h1>
 <h1 ng-if='all' ng-cloak>所有人的打卡紀錄</h1>
 <span>在國外的打卡數：<span ng-bind='abroad.length'></span></span>

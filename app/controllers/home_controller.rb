@@ -1,13 +1,17 @@
 class HomeController < ApplicationController
+
   def map
     @controller = 'map'
   end
+
   def chart
     @controller = 'chart'
   end
+
   def event
     @controller = 'event'
   end
+
   def events
     events = Event.all.to_json
     target_event = []
@@ -18,6 +22,7 @@ class HomeController < ApplicationController
     end
     render json: target_event
   end
+
   def places
     places = Place.all.to_json({:include => :location})
     target_place = []
@@ -28,10 +33,12 @@ class HomeController < ApplicationController
     end
     render json: target_place
   end
+
   def locations
     locations = Location.all
     render json: locations.to_json
   end
+
   def likes
     likes = Like.all.to_json
     target_like = []
@@ -42,6 +49,7 @@ class HomeController < ApplicationController
     end
     render json: target_like
   end
+
   def users
     users = User.all
     render json: users.to_json
@@ -51,7 +59,10 @@ class HomeController < ApplicationController
     redirect_to '/'
   end
   def current_user_id
-    render json: current_user.id
+    if current_user
+      render json: current_user.id
+    end
+    render json: nil
   end
 
 
