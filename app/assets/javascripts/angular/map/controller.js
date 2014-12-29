@@ -8,6 +8,12 @@ angular.module('map.controller', [])
       $http,
       $window
     ) {
+      function inTaiwan(lat,lan){
+        var lat_d = (lat-23.69781)*(lat-23.69781)
+        var lan_d = (lan-120.960515)*(lan-120.960515)
+        var range = 1.5
+        return !(lan_d>range*range||lat_d>range*range)
+      }
       console.log('map')
       var url = "/api/all/places"
       $scope.all = false
@@ -22,6 +28,7 @@ angular.module('map.controller', [])
       var markers;
       $http.get('/api/get_current_user').success(function(data, status, headers, config) {
         $scope.current_user_id = data
+        $scope.abroad = []
         if(!$scope.all){
           url = "/api/places/" + $scope.current_user_id
         }
@@ -38,6 +45,9 @@ angular.module('map.controller', [])
             var country = (location_item.country !== null) ? location_item.country : ""
             var where = (street + " " + city + " " + country) ? street + " " + city + " " + country : ""
             var info = "<h3>" + place.name + "</h3>" + "<p>" + where + "</p>"
+            if(!inTaiwan(location_item.latitude,location_item.longitude)){
+              $scope.abroad.push(location_item)
+            }
             _.each(place.tagged_user, function(user) {
               info = info + '<img width="200" src="' + user.user.pic + '">' + '<h4>' + user.user.name + '</h4>'
             })
