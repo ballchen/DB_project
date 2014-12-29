@@ -7080,7 +7080,7 @@ body{
 	margin-left: 5px;
 	font-style: bold;
 }
-/*.home{
+.home{
 	width:100%;
 	height:100%;
 }
@@ -7103,15 +7103,15 @@ body{
 	height:100%;
 	text-align: center;
 	padding-top: 50px;
-}*/
+}
 #user-photo{
 	text-align: center;
-  margin-top: 5%;
 }
 #user-photo img{
 	border-radius: 100%;
 	border: 7px white solid;
 	padding: 3px;
+	margin-top: 50px;
 }
 #user-name{
 	text-align: center;
