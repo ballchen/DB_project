@@ -61,8 +61,9 @@ class HomeController < ApplicationController
   def current_user_id
     if current_user
       render json: current_user.id
+    else
+      render json: nil
     end
-    render json: nil
   end
 
 
