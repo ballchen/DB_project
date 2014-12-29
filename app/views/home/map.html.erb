@@ -28,7 +28,8 @@
 <div id="user-photo">
     <img src="<%= current_user.pic %>">
 </div>
-<h1>我的打卡紀錄</h1>
+<h1 ng-if='!all' ng-cloak>我的打卡紀錄</h1>
+<h1 ng-if='all' ng-cloak>所有人的打卡紀錄</h1>
 </br>
 <div class="map">
   <div id="map" style='height: 500px; width:100%;'></div>

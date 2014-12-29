@@ -9,11 +9,19 @@ angular.module('chart.controller', [])
       $window
     ) {
       console.log('chart')
+      var url = "/api/all/likes"
+      $scope.all = false
+      if($window.location.pathname==='/charts'){
+        $scope.all =true
+      }
       $http.get('/api/get_current_user').success(function(data, status, headers, config) {
         $scope.current_user_id = data
+        if(!$scope.all){
+          url = "/api/likes/" + $scope.current_user_id
+        }
         $http({
           method: "GET",
-          url: "/api/likes/"+$scope.current_user_id
+          url: url
         }).success(function(data, status, headers, config) {
           var doughnutData = [];
           var cate;

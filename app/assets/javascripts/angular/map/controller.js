@@ -9,6 +9,11 @@ angular.module('map.controller', [])
       $window
     ) {
       console.log('map')
+      var url = "/api/all/places"
+      $scope.all = false
+      if($window.location.pathname==='/places'){
+        $scope.all =true
+      }
       var handler = Gmaps.build('Google', {
         markers: {
           clusterer: undefined
@@ -17,9 +22,12 @@ angular.module('map.controller', [])
       var markers;
       $http.get('/api/get_current_user').success(function(data, status, headers, config) {
         $scope.current_user_id = data
+        if(!$scope.all){
+          url = "/api/places/" + $scope.current_user_id
+        }
         $http({
           method: "GET",
-          url: "/api/places/" + $scope.current_user_id
+          url: url
         }).success(function(data, status, headers, config) {
           $scope.places = data;
           var location_item;

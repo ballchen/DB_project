@@ -6,12 +6,21 @@ Rails.application.routes.draw do
   root 'home#home'
   get '/place' => 'home#map'
   get '/chart' => 'home#chart'
+  get '/event' => 'home#event'
+  get '/places' => 'home#map'
+  get '/charts' => 'home#chart'
+  get '/events' => 'home#event'
   get '/access_token' => 'crawler#get_access_token'
   get '/auth' => 'crawler#auth'
   get '/logout' => 'home#logout'
-  get '/event' => 'home#event'
 
   scope :api do
+    scope :all do
+      # get '/locations' => 'home#locations'
+      get '/places' => 'home#all_places'
+      get '/likes' => 'home#all_likes'
+      get '/events' => 'home#all_events'
+    end
     get '/get_current_user' => 'home#current_user_id'
     get '/locations' => 'home#locations'
     get '/places/:id' => 'home#places'

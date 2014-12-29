@@ -9,9 +9,17 @@ angular.module('event.controller', [])
       $window
     ) {
       console.log('event')
+      var url = "/api/all/events"
+      $scope.all = false
+      if($window.location.pathname==='/events'){
+        $scope.all =true
+      }
       $http.get('/api/get_current_user').success(function(data, status, headers, config) {
         $scope.current_user_id = data
-        $http.get('/api/events/'+$scope.current_user_id).success(function(data, status, headers, config) {
+        if(!$scope.all){
+          url = "/api/events/" + $scope.current_user_id
+        }
+        $http.get(url).success(function(data, status, headers, config) {
           $scope.years = []
           var year
           var event_year

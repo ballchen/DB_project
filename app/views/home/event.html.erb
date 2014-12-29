@@ -84,7 +84,8 @@
 <div id="user-photo">
     <img src="<%= current_user.pic %>">
 </div>
-<h1>我的活動紀錄</h1>
+<h1 ng-if='!all' ng-cloak>我的活動紀錄</h1>
+<h1 ng-if='all' ng-cloak>所有人的活動紀錄</h1>
 </br>
 <accordion close-others="true">
   <accordion-group heading="{{year.year}}" ng-repeat='year in years'>

@@ -53,4 +53,19 @@ class HomeController < ApplicationController
   def current_user_id
     render json: current_user.id
   end
+
+
+  def all_events
+    events = Event.all.to_json
+    render json: events
+  end
+  def all_places
+    places = Place.all.to_json({:include => :location})
+    render json: places
+  end
+  def all_likes
+    likes = Like.all.to_json
+    render json: likes
+  end
+
 end
