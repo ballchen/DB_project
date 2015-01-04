@@ -37,6 +37,7 @@ angular.module('map.controller', [])
           url: url
         }).success(function(data, status, headers, config) {
           $scope.places = data;
+          $scope.done = true
           var location_item;
           var markerInfos = _.map($scope.places, function(place) {
             location_item = place.location

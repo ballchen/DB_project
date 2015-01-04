@@ -26,6 +26,7 @@ angular.module('chart.controller', [])
         }).success(function(data, status, headers, config) {
           var doughnutData = [];
           var cate;
+          $scope.done = true
           var index;
           var colorArray = ["#637b85","#2c9c69","#dbba34","#c62f29","#F38630","#E0E4CC","#69D2E7", '#003399','#3366AA','#FFD700','#FF4500','#FFFF00']
           var likesNum = data.length

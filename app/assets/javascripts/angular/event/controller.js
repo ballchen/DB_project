@@ -21,6 +21,7 @@ angular.module('event.controller', [])
         }
         $http.get(url).success(function(data, status, headers, config) {
           $scope.years = []
+          $scope.done = true
           var year
           var event_year
           _.each(data,function(event){
