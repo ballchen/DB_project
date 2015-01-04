@@ -51,6 +51,7 @@ angular.module('chart.controller', [])
         }).success(function(data, status, headers, config) {
           var doughnutData = [];
           var cate;
+          $scope.done = true
           var index;
           var colorArray = ["#637b85","#2c9c69","#dbba34","#c62f29","#F38630","#E0E4CC","#69D2E7", '#003399','#3366AA','#FFD700','#FF4500','#FFFF00']
           var likesNum = data.length
@@ -125,6 +126,7 @@ angular.module('event.controller', [])
         }
         $http.get(url).success(function(data, status, headers, config) {
           $scope.years = []
+          $scope.done = true
           var year
           var event_year
           _.each(data,function(event){
@@ -194,6 +196,7 @@ angular.module('map.controller', [])
           url: url
         }).success(function(data, status, headers, config) {
           $scope.places = data;
+          $scope.done = true
           var location_item;
           var markerInfos = _.map($scope.places, function(place) {
             location_item = place.location
