@@ -43,7 +43,11 @@
 	<h1 ng-if='!all' ng-cloak>我的粉絲專頁紀錄</h1>
 	<h1 ng-if='all' ng-cloak>所有人的粉絲專頁紀錄</h1>
 	</br>
-			<div id="canvas-holder">
-				<canvas id="chart-area" width="500" height="500"/>
-			</div>
+		<div id="canvas-holder">
+			<canvas id="chart-area" width="500" height="500"/>
+		</div>
+			<div ng-repeat='like in likes'>
+		<span ng-bind='like.name'></span>
+	</div>
+
 </body>

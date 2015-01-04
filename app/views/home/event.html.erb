@@ -78,8 +78,10 @@
     background-color: white;
     border: 0px;
   }
+  #modal {
+   margin: 0 auto;
+  }
 </style>
-
 <div class="back"><a class="button" href="/"><i class="icon-chevron-left icon-white"></i>Back to home</a></div>
 <% if current_user %>
   <div id="user-photo">
@@ -91,20 +93,37 @@
 </br>
 <accordion close-others="true">
   <accordion-group heading="{{year.year}}" ng-repeat='year in years'>
-    <div ng-repeat='event in year.events'>
-      <div class="event-details">
-        <div ng-bind='event.name' class="names"></div>
-        <div class="images"><img ng-src='{{event.cover}}'></div>
-      </div>
+    <div ng-repeat='event in year.events' ng-click='openModal(event)'>
+      <a href="#{{event.name}}">
+        <div class="event-details">
+          <div ng-bind='event.name' class="names"></div>
+          <div class="images"><img ng-src='{{event.cover}}'></div>
+        </div>
+      </a>
+
+      <section class="modal--show" id="{{event.name}}" tabindex="-1" role="dialog" aria-labelledby="modal-label" aria-hidden="true">
+        <div class="modal-inner">
+          <header id="modal-label">
+            <div ng-bind='event.name'></div>
+          </header>
+          <div class="modal-content">
+            <div ng-bind='event.description'></div>
+          </div>
+          <footer><!-- Footer --></footer>
+        </div>
+        <a href="#!" class="modal-close" title="Close this modal" data-close="Close"
+              data-dismiss="modal">?</a>
+      </section>
+
     </div>
   </accordion-group>
 </accordion>
 
 <script id="template/accordion/accordion-group.html" type="text/ng-template">
   <div class="panel panel-default">
-    <div class="panel-heading">
+    <div class="panel-heading" ng-click="toggleOpen()">
       <h4 class="panel-title">
-        <a href class="accordion-toggle" ng-click="toggleOpen()" accordion-transclude="heading"><span ng-class="{'text-muted': isDisabled}">{{heading}}</span> </a><i class="icon-flag"></i>
+        <a href class="accordion-toggle" accordion-transclude="heading"><span ng-class="{'text-muted': isDisabled}">{{heading}}</span> </a><i class="icon-flag"></i>
       </h4>
     </div>
     <div class="panel-collapse" collapse="!isOpen">
@@ -112,6 +131,8 @@
     </div>
   </div>
 </script>
+
+
 <script id="template/accordion/accordion.html" type="text/ng-template">
   <div class="panel-group" ng-transclude></div>
 </script>
