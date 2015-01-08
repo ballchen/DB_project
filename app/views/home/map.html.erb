@@ -22,6 +22,9 @@
 		position: fixed;
 		margin: 20px;
 	}
+	.loading{
+    	text-align: center;
+  	}
 </style>
 
 <div class="back"><a class="button" href="/"><i class="icon-chevron-left icon-white"></i>Back to home</a></div>
@@ -32,7 +35,7 @@
 <% end %>
 <h1 ng-if='!all' ng-cloak>我的打卡紀錄</h1>
 <h1 ng-if='all' ng-cloak>所有人的打卡紀錄</h1>
-<img src="/images/loading-bars.svg" width="64" height="64" ng-hide='done'/>
+  <div class="loading"><img src="/images/loading-bars.svg" width="80" height="80" ng-hide='done'/></div>
 <span>在國外的打卡數：<span ng-bind='abroad.length'></span></span>
 </br>
 <div class="map">

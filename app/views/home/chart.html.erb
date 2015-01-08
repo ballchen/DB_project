@@ -31,6 +31,16 @@
 		#canvas-holder{
 			margin: 15px auto;
 		}
+		.likename{
+			/*border: 3px solid white;*/
+			border-radius: 10px;
+			padding: 8px 15px;
+			margin: 5px;
+			background-color: rgba(255, 255, 255, 0.6);
+		}
+		.loading{
+	    	text-align: center;
+	  	}
 	</style>
 </head>
 <body>
@@ -42,13 +52,17 @@
 	<% end %>
 	<h1 ng-if='!all' ng-cloak>我的粉絲專頁紀錄</h1>
 	<h1 ng-if='all' ng-cloak>所有人的粉絲專頁紀錄</h1>
-	<img src="/images/loading-bars.svg" width="64" height="64" ng-hide='done'/>
+	<div class="loading"><img src="/images/loading-bars.svg" width="80" height="80" ng-hide='done'/></div>
 	</br>
 		<div id="canvas-holder">
 			<canvas id="chart-area" width="500" height="500"/>
 		</div>
-			<div ng-repeat='like in likes'>
-		<span ng-bind='like.name'></span>
-	</div>
+	</br></br></br>
+		<h1 ng-if='all' ng-cloak>備受喜愛的粉絲專頁總列表</h1>
+	</br>
+		<div ng-repeat='like in likes' style="display: inline-block; text-align: center; margin:0 auto;">
+			<!-- <span ng-bind='like.name'></span> -->
+			<div ng-bind='like.name' class="likename"></div>
+		</div>
 
 </body>

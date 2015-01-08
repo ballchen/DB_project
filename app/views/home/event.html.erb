@@ -81,6 +81,19 @@
   #modal {
    margin: 0 auto;
   }
+  .loading{
+    text-align: center;
+  }
+  .modal-inner{}
+  .modal-label{}
+  .modal-inner .modal-content{
+    background-color: white;
+    box-shadow: 0;
+    border-radius: 0;
+    -webkit-box-shadow: 0;
+    border: 0px;
+    padding: 50px 100px;
+  }
 </style>
 <div class="back"><a class="button" href="/"><i class="icon-chevron-left icon-white"></i>Back to home</a></div>
 <% if current_user %>
@@ -91,7 +104,7 @@
 <h1 ng-if='!all' ng-cloak>我的活動紀錄</h1>
 <h1 ng-if='all' ng-cloak>所有人的活動紀錄</h1>
 </br>
-<img src="/images/loading-bars.svg" width="64" height="64" ng-hide='done'/>
+  <div class="loading"><img src="/images/loading-bars.svg" width="80" height="80" ng-hide='done'/></div>
 <accordion close-others="true">
   <accordion-group heading="{{year.year}}" ng-repeat='year in years'>
     <div ng-repeat='event in year.events | orderBy : "-start_time"' ng-click='openModal(event)'>
