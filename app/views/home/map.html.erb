@@ -9,7 +9,7 @@
 		margin-top: 30px;
 		width: 100px;
 	}
-	h1{
+	h1,h3{
 		text-align: center;
 	}
 	.map{
@@ -19,7 +19,7 @@
 		color: white;
 	}
 	.back{
-		position: fixed;
+		position: relative;
 		margin: 20px;
 	}
 	.loading{
@@ -28,6 +28,7 @@
 </style>
 
 <div class="back"><a class="button" href="/"><i class="icon-chevron-left icon-white"></i>Back to home</a></div>
+<div class="back"><a class="button" href="/places"><i class="icon-chevron-left icon-white"></i>所有人的打卡記錄</a></div>
 <% if current_user %>
   <div id="user-photo">
       <img src="<%= current_user.pic %>">
@@ -36,7 +37,7 @@
 <h1 ng-if='!all' ng-cloak>我的打卡紀錄</h1>
 <h1 ng-if='all' ng-cloak>所有人的打卡紀錄</h1>
   <div class="loading"><img src="/images/loading-bars.svg" width="80" height="80" ng-hide='done'/></div>
-<span>在國外的打卡數：<span ng-bind='abroad.length'></span></span>
+<h3>在國外的打卡數：<span ng-bind='abroad.length'></span></h3>
 </br>
 <div class="map">
   <div id="map" style='height: 500px; width:100%;'></div>

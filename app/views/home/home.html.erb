@@ -16,6 +16,9 @@
     .login img{
         width: 250px;
     }
+    .menu{
+        padding: 30px;
+    }
     #logo{
         position: fixed;
         margin: 30px 30px;
@@ -71,13 +74,11 @@
     			<% if current_user.location %><i class="icon-map-marker"></i><p>現居<%= current_user.location  %></p><% end %>
     			<% if current_user.hometown %><i class="icon-home"></i><p>來自<%= current_user.hometown  %></p><% end %>
             </div>
-	    	<div class="menu">
-	    		<a href="place"><div id="nav1"><img src="/images/map.png"><p>打卡紀錄</p></div></a>
-	    		<a href="event"><div id="nav2"><img src="/images/event.png"><p>活動紀錄</p></div></a>
-	    		<a href="chart"><div id="nav3"><img src="/images/page.png"><p>粉絲專頁</p></div></a>
-	    	</div>
-            <!-- <a href="/logout">LOGOUT</a> -->
-
+            <div class="menu">
+                <a href="/place"><div id="nav1"><img src="/images/map.png"><p>我的打卡紀錄</p></div></a>
+                <a href="/event"><div id="nav2"><img src="/images/event.png"><p>我的活動紀錄</p></div></a>
+                <a href="/chart"><div id="nav3"><img src="/images/page.png"><p>我的粉絲專頁</p></div></a>
+            </div>
         </div>
     <% else %>
 <!--         <a href="/access_token">ACCESS TOKEN</a> -->

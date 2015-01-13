@@ -32,6 +32,7 @@ angular.module('chart.controller', [])
           var likesNum = data.length
           $scope.likes = data
           _.each(data,function(like){
+            console.log(like)
             cate = _.findWhere(likeData, {label: like.category})
             if( cate !== undefined){
               index = _.indexOf(likeData,cate)

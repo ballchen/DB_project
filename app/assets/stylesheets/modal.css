@@ -66,6 +66,7 @@ html {
   display: block\9;
 }
 .modal--show .modal-inner {
+  max-height: 80%;
   position: absolute;
   top: 50px;
   left: 50%;
@@ -93,8 +94,6 @@ html {
 }
 .modal--show .modal-content {
   position: relative;
-  max-height: 400px;
-  max-height: 80vh;
   overflow-x: hidden;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
@@ -134,8 +133,8 @@ html {
   z-index: 10;
 }
 .modal--show .modal-close:after {
-  content: '\00d7';
   position: absolute;
+  background: none;
   top: 25px;
   right: 50%;
   z-index: 20;
@@ -150,6 +149,7 @@ html {
   }
   .modal--show .modal-close:after {
     margin-right: 0 !important;
+    background: none;
     right: 20px;
   }
 }
@@ -211,14 +211,14 @@ html {
 }
 @media screen and (max-height: 46em) and (min-width: 30em) {
   .modal--show .modal-content {
-    max-height: 340px;
-    max-height: 50vh;
+    /*max-height: 340px;*/
+    /*max-height: 50vh;*/
   }
 }
 @media screen and (max-height: 36em) and (min-width: 30em) {
   .modal--show .modal-content {
-    max-height: 265px;
-    max-height: 40vh;
+    /*max-height: 265px;*/
+    /*max-height: 40vh;*/
   }
 }
 .is-stacked.modal--show {
@@ -284,8 +284,8 @@ html {
 .modal--show .modal-inner {
   border-radius: 2px;
   background: #fff;
-  -webkit-box-shadow: 0 0 30px rgba(0, 0, 0, 0.6);
-  box-shadow: 0 0 30px rgba(0, 0, 0, 0.6);
+  /*-webkit-box-shadow: 0 0 30px rgba(0, 0, 0, 0.6);*/
+  /*box-shadow: 0 0 30px rgba(0, 0, 0, 0.6);*/
   max-width: 100%;
   -webkit-transition: max-width 0.25s linear, margin-left 0.125s linear;
   transition: max-width 0.25s linear, margin-left 0.125s linear;
@@ -331,13 +331,13 @@ html {
     background-image: -o-linear-gradient(top, #27aae2, #1c9cd3);
     background-image: linear-gradient(to bottom, #27aae2, #1c9cd3);
     height: 3em;
-    -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.6);
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.6);
+    /*-webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.6);*/
+    /*box-shadow: 0 0 5px rgba(0, 0, 0, 0.6);*/
   }
   .modal--show .modal-inner {
     padding-top: 3em;
-    -webkit-box-shadow: none;
-    box-shadow: none;
+    /*-webkit-box-shadow: none;*/
+    /*box-shadow: none;*/
   }
   .modal--show .modal-close {
     text-decoration: none;

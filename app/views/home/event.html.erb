@@ -16,7 +16,7 @@
     color: white;
   }
   .back{
-    position: fixed;
+    position: relative;
     margin: 20px;
   }
   accordion .panel{
@@ -85,17 +85,27 @@
     text-align: center;
   }
   .modal-inner{}
-  .modal-label{}
+  #modal-label{
+    font-size: 30px;
+  }
   .modal-inner .modal-content{
     background-color: white;
-    box-shadow: 0;
-    border-radius: 0;
-    -webkit-box-shadow: 0;
+    /*box-shadow: 0;*/
+    /*border-radius: 0;*/
+    /*-webkit-box-shadow: 0;*/
     border: 0px;
     padding: 50px 100px;
   }
+  header{
+    z-index: 300;
+  }
+  .modal--show .modal-close:after{
+    background: none;
+    content: none;
+  }
 </style>
 <div class="back"><a class="button" href="/"><i class="icon-chevron-left icon-white"></i>Back to home</a></div>
+<div class="back"><a class="button" href="/events"><i class="icon-chevron-left icon-white"></i>所有人的活動紀錄</a></div>
 <% if current_user %>
   <div id="user-photo">
       <img src="<%= current_user.pic %>">
@@ -121,12 +131,12 @@
             <div ng-bind='event.name'></div>
           </header>
           <div class="modal-content">
+            <img ng-src='{{event.cover}}' style="padding:10px;">
             <div ng-bind='event.description'></div>
           </div>
-          <footer><!-- Footer --></footer>
         </div>
         <a href="#!" class="modal-close" title="Close this modal" data-close="Close"
-              data-dismiss="modal">?</a>
+              data-dismiss="modal"></a>
       </section>
 
     </div>
