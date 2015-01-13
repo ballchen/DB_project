@@ -45,13 +45,15 @@ angular.module('map.controller', [])
             var city = (location_item.city !== null) ? location_item.city : ""
             var country = (location_item.country !== null) ? location_item.country : ""
             var where = (street + " " + city + " " + country) ? street + " " + city + " " + country : ""
-            var info = "<h3>" + place.name + "</h3>" + "<p>" + where + "</p>"
+            var info = "<div class='map-container'><h3>" + place.name + "</h3>" + "<p>" + where + "</p>"
+
             if(!inTaiwan(location_item.latitude,location_item.longitude)){
               $scope.abroad.push(location_item)
             }
             _.each(place.tagged_user, function(user) {
-              info = info + '<img width="200" src="' + user.user.pic + '">' + '<h4>' + user.user.name + '</h4>'
+              info = info + '<img width="100" src="' + user.user.pic + '">' + '<h4>' + user.user.name + '</h4>'
             })
+            info = info + "</div>"
             return {
               "infowindow": info,
               "picture": {
@@ -73,7 +75,6 @@ angular.module('map.controller', [])
             markers = markerInfos.map(function(m) {
               var marker = handler.addMarker(m);
               marker.serviceObject.id = m.id;
-
               google.maps.event.addListener(marker.serviceObject, 'click', function() {
                 $scope.location = _.find($scope.places, function(location) {
                   return location.id == marker.serviceObject.id

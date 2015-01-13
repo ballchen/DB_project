@@ -16,7 +16,7 @@ class HomeController < ApplicationController
     events = Event.all.to_json
     target_event = []
     ActiveSupport::JSON.decode(events).each do |event|
-      if event['participant'].to_json.include?('"id":'+params[:id])
+      if event['participant'].to_json.include?('"id":'+params[:id]+',')
         target_event.push(event)
       end
     end
@@ -27,7 +27,7 @@ class HomeController < ApplicationController
     places = Place.all.to_json({:include => :location})
     target_place = []
     ActiveSupport::JSON.decode(places).each do |place|
-      if place['tagged_user'].to_json.include?('"id":'+params[:id])
+      if place['tagged_user'].to_json.include?('"id":'+params[:id]+',')
         target_place.push(place)
       end
     end
@@ -43,7 +43,7 @@ class HomeController < ApplicationController
     likes = Like.all.to_json
     target_like = []
     ActiveSupport::JSON.decode(likes).each do |like|
-      if like['liker'].to_json.include?('"id":'+params[:id])
+      if like['liker'].to_json.include?('"id":'+params[:id]+',')
         target_like.push(like)
       end
     end
