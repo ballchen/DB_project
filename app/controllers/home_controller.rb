@@ -1,18 +1,30 @@
 class HomeController < ApplicationController
-
   def map
+    if !current_user
+      redirect_to root_path
+    end
     @controller = 'map'
   end
 
   def chart
+    if !current_user
+      redirect_to root_path
+    end
     @controller = 'chart'
   end
 
   def event
+    if !current_user
+      redirect_to root_path
+    end
     @controller = 'event'
   end
 
   def events
+    if !current_user
+      render json: nil
+      return
+    end
     events = Event.all.to_json
     target_event = []
     ActiveSupport::JSON.decode(events).each do |event|
@@ -24,6 +36,10 @@ class HomeController < ApplicationController
   end
 
   def places
+    if !current_user
+      render json: nil
+      return
+    end
     places = Place.all.to_json({:include => :location})
     target_place = []
     ActiveSupport::JSON.decode(places).each do |place|
@@ -35,11 +51,19 @@ class HomeController < ApplicationController
   end
 
   def locations
+    if !current_user
+      render json: nil
+      return
+    end
     locations = Location.all
     render json: locations.to_json
   end
 
   def likes
+    if !current_user
+      render json: nil
+      return
+    end
     likes = Like.all.to_json
     target_like = []
     ActiveSupport::JSON.decode(likes).each do |like|
@@ -51,6 +75,10 @@ class HomeController < ApplicationController
   end
 
   def users
+    if !current_user
+      render json: nil
+      return
+    end
     users = User.all
     render json: users.to_json
   end
@@ -63,19 +91,32 @@ class HomeController < ApplicationController
       render json: current_user.id
     else
       render json: nil
+      return
     end
   end
 
 
   def all_events
+    if !current_user
+      render json: nil
+      return
+    end
     events = Event.all.to_json
     render json: events
   end
   def all_places
+    if !current_user
+      render json: nil
+      return
+    end
     places = Place.all.to_json({:include => :location})
     render json: places
   end
   def all_likes
+    if !current_user
+      render json: nil
+      return
+    end
     likes = Like.all.to_json
     render json: likes
   end
