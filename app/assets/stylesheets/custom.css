@@ -4,7 +4,7 @@ html{
 body{
 	background: url("//www.designbolts.com/wp-content/uploads/2014/03/Light-Blue-blur-background1.jpg");
 	background-attachment:fixed;
-	background-size: 100%;
+	background-size: cover;
 	height: 100%;
 	margin: 0;
 	width: 100%;

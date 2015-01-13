@@ -36,16 +36,18 @@
 </style>
 
 <div class="back"><a class="button" href="/"><i class="icon-chevron-left icon-white"></i>Back to home</a></div>
-<div class="back"><a class="button" href="/places"><i class="icon-chevron-left icon-white"></i>所有人的打卡記錄</a></div>
+<div ng-if='!all' ng-cloak ng-hide='!done' class="back"><a class="button" href="/places"><i class="icon-chevron-left icon-white"></i>所有人的打卡紀錄</a></div>
+<div ng-if='all' ng-cloak ng-hide='!done' class="back"><a class="button" href="/place"><i class="icon-chevron-left icon-white"></i>我的打卡紀錄</a></div>
 <% if current_user %>
   <div id="user-photo">
       <img src="<%= current_user.pic %>">
   </div>
 <% end %>
-<h1 ng-if='!all' ng-cloak>我的打卡紀錄</h1>
-<h1 ng-if='all' ng-cloak>所有人的打卡紀錄</h1>
-  <div class="loading"><img src="/images/loading-bars.svg" width="80" height="80" ng-hide='done'/></div>
-<h3>在國外的打卡數：<span ng-bind='abroad.length'></span></h3>
+<h1 ng-if='!all' ng-cloak ng-hide='!done'>我的打卡紀錄</h1>
+<h1 ng-if='all' ng-cloak ng-hide='!done'>所有人的打卡紀錄</h1>
+<h3 ng-hide='!done' ng-cloak>打卡紀錄數量：<span ng-bind='places.length'></span></h3>
+<h3 ng-hide='!done' ng-cloak>在國外的打卡數：<span ng-bind='abroad.length'></span></h3>
+<div class="loading"><img src="/images/loading-bars.svg" width="80" height="80" ng-hide='done'/></div>
 </br>
 <div class="map">
   <div id="map" style='height: 500px; width:100%;'></div>

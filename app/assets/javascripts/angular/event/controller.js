@@ -20,6 +20,7 @@ angular.module('event.controller', [])
           url = "/api/events/" + $scope.current_user_id
         }
         $http.get(url).success(function(data, status, headers, config) {
+          $scope.length =data.length
           $scope.years = []
           $scope.done = true
           var year

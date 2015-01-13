@@ -9,7 +9,7 @@
     margin-top: 30px;
     width: 100px;
   }
-  h1{
+  h1,h3{
     text-align: center;
   }
   .back .button{
@@ -105,17 +105,20 @@
   }
 </style>
 <div class="back"><a class="button" href="/"><i class="icon-chevron-left icon-white"></i>Back to home</a></div>
-<div class="back"><a class="button" href="/events"><i class="icon-chevron-left icon-white"></i>所有人的活動紀錄</a></div>
+<div ng-if='!all' ng-cloak ng-hide='!done' class="back"><a class="button" href="/events"><i class="icon-chevron-left icon-white"></i>所有人的活動紀錄</a></div>
+<div ng-if='all' ng-cloak ng-hide='!done' class="back"><a class="button" href="/event"><i class="icon-chevron-left icon-white"></i>我的活動紀錄</a></div>
+
 <% if current_user %>
   <div id="user-photo">
       <img src="<%= current_user.pic %>">
   </div>
 <% end %>
-<h1 ng-if='!all' ng-cloak>我的活動紀錄</h1>
-<h1 ng-if='all' ng-cloak>所有人的活動紀錄</h1>
+<h1 ng-if='!all' ng-cloak ng-hide='!done'>我的活動紀錄</h1>
+<h1 ng-if='all' ng-cloak ng-hide='!done'>所有人的活動紀錄</h1>
+<h3 ng-hide='!done' ng-cloak>活動紀錄數量：<span ng-bind='length'></span></h3>
 </br>
   <div class="loading"><img src="/images/loading-bars.svg" width="80" height="80" ng-hide='done'/></div>
-<accordion close-others="true">
+<accordion ng-cloak ng-hide='!done' close-others="true">
   <accordion-group heading="{{year.year}}" ng-repeat='year in years'>
     <div ng-repeat='event in year.events | orderBy : "-start_time"' ng-click='openModal(event)'>
       <a href="#{{event.name}}">

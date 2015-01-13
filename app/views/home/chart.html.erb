@@ -18,7 +18,7 @@
 			margin-top: 30px;
 			width: 100px;
 		}
-		h1{
+		h1,h3{
 			text-align: center;
 		}
 		.back .button{
@@ -54,8 +54,9 @@
 	      <img src="<%= current_user.pic %>">
 	  </div>
 	<% end %>
-	<h1 ng-if='!all' ng-cloak>我的粉絲專頁紀錄</h1>
-	<h1 ng-if='all' ng-cloak>所有人的粉絲專頁紀錄</h1>
+	<h1 ng-if='!all' ng-hide='!done' ng-cloak>我的粉絲專頁紀錄</h1>
+	<h1 ng-if='all' ng-hide='!done' ng-cloak>所有人的粉絲專頁紀錄</h1>
+	<h3 ng-hide='!done' ng-cloak>粉絲專頁數量：<span ng-bind='likes.length'></span></h3>
 	<div class="loading"><img src="/images/loading-bars.svg" width="80" height="80" ng-hide='done'/></div>
 	</br>
 		<div id="canvas-holder">
