@@ -95,7 +95,7 @@ class CrawlerController < ApplicationController
         name: current_user.name
       }
     }
-    if !event.participant.to_json.include?(current_user_json.to_json)
+    if !event.participant.to_json.include?('"id":'+current_user.id.to_s+',')
       event.participant.push(current_user_json)
     end
     if(current_user.events==nil)
@@ -112,7 +112,7 @@ class CrawlerController < ApplicationController
         attending_count: event.attending_count
       }
     }
-    if !current_user.events.to_json.include?(event_json.to_json)
+    if !current_user.events.to_json.include?('"id":'+event.id.to_s+',')
       current_user.events.push(event_json)
     end
     event.participant = event.participant.to_json
@@ -149,24 +149,25 @@ class CrawlerController < ApplicationController
             major = Major.find_or_create_by(data_id: major_data["id"].to_i)
             major.name = major_data["name"]
             major_json = {
+              id: major.id,
               name: major.name
             }
             if major.students == nil
               major.students =[]
             end
-            if !major.students.to_json.include?(user_json.to_json)
+            if !major.students.to_json.include?('"id":'+user.id.to_s+',')
               major.students.push(user_json)
             end
             if user.majors == nil
               user.majors =[]
             end
-            if !user.majors.to_json.include?(major_json.to_json)
+            if !user.majors.to_json.include?('"id":'+major.id.to_s+',')
               user.majors.push(major_json)
             end
             if school.majors == nil
               school.majors =[]
             end
-            if !school.majors.to_json.include?(major_json.to_json)
+            if !school.majors.to_json.include?('"id":'+major.id.to_s+',')
               school.majors.push(major_json)
             end
             major.students = major.students.to_json
@@ -177,16 +178,17 @@ class CrawlerController < ApplicationController
           user.schools =[]
         end
         education_json={
+          id: school.id,
           name: school.name,
           type: school.school_type
         }
-        if !user.schools.to_json.include?(education_json.to_json)
+        if !user.schools.to_json.include?('"id":'+school.id.to_s+',')
           user.schools.push(education_json)
         end
         if school.students == nil
           school.students = []
         end
-        if !school.students.to_json.include?(user_json.to_json)
+        if !school.students.to_json.include?('"id":'+user.id.to_s+',')
           school.students.push(user_json)
         end
         school.students = school.students.to_json
@@ -232,7 +234,7 @@ class CrawlerController < ApplicationController
         longitude: location.longitude
       }
     }
-    if !current_user.been_to.to_json.include?(place_json.to_json)
+    if !current_user.been_to.to_json.include?('"id":'+place.id.to_s+',')
       current_user.been_to.push(place_json)
     end
     current_user_json = {
@@ -242,7 +244,7 @@ class CrawlerController < ApplicationController
         name: current_user.name
       }
     }
-    if !place.tagged_user.to_json.include?(current_user_json.to_json)
+    if !place.tagged_user.to_json.include?('"id":'+current_user.id.to_s+',')
       place.tagged_user.push(current_user_json)
     end
     if data['tags'] != nil
@@ -253,7 +255,7 @@ class CrawlerController < ApplicationController
         if(user.been_to==nil)
           user.been_to = []
         end
-        if !user.been_to.to_json.include?(place_json.to_json)
+        if !user.been_to.to_json.include?('"id":'+place.id.to_s+',')
           user.been_to.push(place_json)
         end
         user_json = {
@@ -263,7 +265,7 @@ class CrawlerController < ApplicationController
             name: user.name
           }
         }
-        if !place.tagged_user.to_json.include?(user_json.to_json)
+        if !place.tagged_user.to_json.include?('"id":'+user.id.to_s+',')
           place.tagged_user.push(user_json)
         end
         user.been_to = user.been_to.to_json
@@ -291,10 +293,9 @@ class CrawlerController < ApplicationController
         name: like.name
       }
     }
-    if !current_user.likes.to_json.include?(like_json.to_json.to_json)
+    if !current_user.likes.to_json.include?('"id":'+like.id.to_s+',')
       current_user.likes.push(like_json)
       current_user.likes = current_user.likes.to_json
-
     end
     if (like.liker ==nil)
       like.liker = []
@@ -306,7 +307,7 @@ class CrawlerController < ApplicationController
         name: current_user.name
       }
     }
-    if !like.liker.to_json.include?(current_user_json.to_json)
+    if !like.liker.to_json.include?('"id":'+current_user.id.to_s+',')
       like.liker.push(current_user_json)
       like.liker = like.liker.to_json
     end
