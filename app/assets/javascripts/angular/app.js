@@ -4,6 +4,7 @@ angular.module('app', [
   'angular-underscore',
   'highcharts-ng',
   'angularMoment',
+  'duScroll',
 
   'app.controller',
   'map',

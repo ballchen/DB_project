@@ -46,7 +46,7 @@
     overflow: hidden;
     margin: 0 auto 0 auto;
     text-align: center;
-    background-color: black;
+    background-color: #A8BECD;
   }
   accordion .event-details:hover .images{
     opacity: 0.3;
@@ -83,6 +83,11 @@
   }
   .loading{
     text-align: center;
+  }
+  .pic{
+    float: right;
+    right: 0;
+    left: 0;
   }
   .modal-inner{}
   #modal-label{
@@ -124,6 +129,9 @@
       <a href="#{{event.name}}">
         <div class="event-details">
           <div ng-bind='event.name' class="names"></div>
+          <div class="names pic">
+            <img ng-src="{{user.user.pic}}" width="30" ng-repeat="user in event.participant">
+          </div>
           <div class="images"><img ng-src='{{event.cover}}'></div>
         </div>
       </a>

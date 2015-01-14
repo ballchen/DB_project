@@ -60,14 +60,15 @@
 	<h3 ng-hide='!done' ng-cloak>粉絲專頁數量：<span ng-bind='likes.length'></span></h3>
 	<div class="loading"><img src="/images/loading-bars.svg" width="80" height="80" ng-hide='done'/></div>
 	</br>
-		<div id="canvas-holder">
+		<div id="canvas-holder" du-smooth-scroll href="#anchor" >
 			<canvas id="chart-area" width="500" height="500"/>
 		</div>
 	</br></br></br>
-		<h1 ng-hide='!done' ng-cloak>備受喜愛的粉絲專頁總列表</h1>
+		<h1 ng-hide='!done' ng-cloak id='anchor'>備受喜愛的粉絲專頁總列表</h1>
 	</br>
 	<div ng-hide='!done' ng-cloak ng-repeat='like in likes | orderBy : "-liker.length"' style="display: inline-block; text-align: center; margin:0 auto;">
-		<div  class="likename">
+		<div  class="likename" ng-mouseenter="like.show = true" ng-mouseleave="like.show = false">
+			<img width="30" ng-if='like.show' ng-src="{{liker.user.pic}}" ng-repeat='liker in like.liker'>
 			<a href="http://www.facebook.com/{{like.data_id}}" ng-bind='like.name'></a>
 		</div>
 	</div>
