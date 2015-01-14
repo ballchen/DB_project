@@ -7,7 +7,7 @@ angular.module('app', [
 
   'app.controller',
   'map',
-  'chart',
+  'like',
   'event'
   ])
 .run(function(amMoment) {

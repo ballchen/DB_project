@@ -55,22 +55,6 @@ class CrawlerController < ApplicationController
       current_user.save
       ActiveRecord::Base.connection.close
     end
-    # location = Location.all
-    # place = Place.all
-    # like = Like.all
-    # user = User.all
-    # event = Event.all
-    # major = Major.all
-    # school = School.all
-    # render json: {
-      # location: location,
-      # place: place,
-      # like: like,
-      # user: user,
-      # event: event,
-      # major: major,
-      # school: school
-    # }
     redirect_to '/'
   end
 

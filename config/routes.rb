@@ -5,10 +5,10 @@ Rails.application.routes.draw do
   # You can have the root of your site routed with "root"
   root 'home#home'
   get '/place' => 'home#map'
-  get '/chart' => 'home#chart'
+  get '/like' => 'home#like'
   get '/event' => 'home#event'
   get '/places' => 'home#map'
-  get '/charts' => 'home#chart'
+  get '/likes' => 'home#like'
   get '/events' => 'home#event'
   get '/access_token' => 'crawler#get_access_token'
   get '/auth' => 'crawler#auth'

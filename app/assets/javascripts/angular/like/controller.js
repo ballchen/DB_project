@@ -1,5 +1,5 @@
-angular.module('chart.controller', [])
-  .controller("chart", [
+angular.module('like.controller', [])
+  .controller("like", [
     '$scope',
     '$http',
     '$window',
@@ -8,11 +8,11 @@ angular.module('chart.controller', [])
       $http,
       $window
     ) {
-      console.log('chart')
+      console.log('like')
       var url = "/api/all/likes"
       var likeData = []
       $scope.all = false
-      if($window.location.pathname==='/charts'){
+      if($window.location.pathname==='/likes'){
         $scope.all =true
       }
       $http.get('/api/get_current_user').success(function(data, status, headers, config) {

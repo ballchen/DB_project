@@ -48,7 +48,8 @@
 </head>
 <body>
 	<div class="back"><a class="button" href="/"><i class="icon-chevron-left icon-white"></i>Back to home</a></div>
-	<div class="back"><a class="button" href="/charts"><i class="icon-chevron-left icon-white"></i>所有人的粉絲專頁紀錄</a></div>
+	<div ng-if='!all' ng-cloak ng-hide='!done' class="back"><a class="button" href="/likes"><i class="icon-chevron-left icon-white"></i>所有人的粉絲專頁紀錄</a></div>
+	<div ng-if='all' ng-cloak ng-hide='!done' class="back"><a class="button" href="/like"><i class="icon-chevron-left icon-white"></i>所有人的粉絲專頁紀錄</a></div>
 	<% if current_user %>
 	  <div id="user-photo">
 	      <img src="<%= current_user.pic %>">

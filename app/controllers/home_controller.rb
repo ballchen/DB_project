@@ -6,11 +6,11 @@ class HomeController < ApplicationController
     @controller = 'map'
   end
 
-  def chart
+  def like
     if !current_user
       redirect_to root_path
     end
-    @controller = 'chart'
+    @controller = 'like'
   end
 
   def event
