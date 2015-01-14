@@ -108,6 +108,17 @@
     background: none;
     content: none;
   }
+  .portrait {
+    margin: 10px;
+    width:40px;
+    height:30px;
+    overflow:hidden;
+    padding: 0px;
+  }
+  .image_small{
+    margin-left: 5px; 
+    margin-right: 5px;
+  }
 </style>
 <div class="back"><a class="button" href="/"><i class="icon-chevron-left icon-white"></i>Back to home</a></div>
 <div ng-if='!all' ng-cloak ng-hide='!done' class="back"><a class="button" href="/events"><i class="icon-chevron-left icon-white"></i>所有人的活動紀錄</a></div>
@@ -129,8 +140,8 @@
       <a href="#{{event.name}}">
         <div class="event-details">
           <div ng-bind='event.name' class="names"></div>
-          <div class="names pic">
-            <img ng-src="{{user.user.pic}}" width="30" ng-repeat="user in event.participant">
+          <div class="pic portrait">
+            <img class="image_small" ng-src="{{user.user.pic}}" width="30" ng-repeat="user in event.participant">
           </div>
           <div class="images"><img ng-src='{{event.cover}}'></div>
         </div>

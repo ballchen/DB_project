@@ -44,6 +44,15 @@
 	  	canvas{
 	  		cursor: pointer;
 	  	}
+	  	.portrait {
+	        float:left;
+	        width:20px;
+	        height:20px;
+	        overflow:hidden;
+	        padding: 0px;
+	       	margin-left: 5px;	
+	       	margin-right: 5px;	
+    	}
 	</style>
 </head>
 <body>
@@ -68,7 +77,9 @@
 	</br>
 	<div ng-hide='!done' ng-cloak ng-repeat='like in likes | orderBy : "-liker.length"' style="display: inline-block; text-align: center; margin:0 auto;">
 		<div  class="likename" ng-mouseenter="like.show = true" ng-mouseleave="like.show = false">
-			<img width="30" ng-if='like.show' ng-src="{{liker.user.pic}}" ng-repeat='liker in like.liker'>
+			<div class="portrait" ng-repeat='liker in like.liker' ng-if='like.show' >
+				<img width="20" ng-src="{{liker.user.pic}}">
+			</div>
 			<a href="http://www.facebook.com/{{like.data_id}}" ng-bind='like.name'></a>
 		</div>
 	</div>
